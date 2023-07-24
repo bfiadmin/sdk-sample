@@ -10,9 +10,9 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import io.storyplayer.consumer.ShowActivity;
-import io.storyplayer.consumer.ShowEventListener;
+import io.storyplayer.consumer.ShowEventObject;
 import io.storyplayer.consumer.StoryPlayerView;
+import io.storyplayer.consumer.ShowActivity;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -24,8 +24,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         storyPlayerView = findViewById(R.id.storyPlayerView);
-        ShowEventListener showEventListener = new ShowEventListener();
-        storyPlayerView.addShowEventListener(showEventListener);
+        ShowEventObject object = new ShowEventObject();
+        object.setCustomObjectListener(new ShowEventObject.ShowEventListener() {
+
+            @Override
+            public void onDispatchEvent(String message) {
+                Log.d("test", message);
+            }
+        });
+        storyPlayerView.addShowEventListener(object);
         storyPlayerView.setShowId("73228940291189");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             pipParams = new PictureInPictureParams.Builder();
